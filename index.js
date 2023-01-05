@@ -2,7 +2,7 @@
 
 function replace(str, term) {
   var TAG = 'b';
-  const regexp = new RegExp('(?<!<b>[a-z]*)' + term + '(?![a-z]*<\\/b>)', 'gi');
+  var regexp = new RegExp('(?<!<b>[a-z]{0,1000})' + term + '(?![a-z]{0,1000}<\\/b>)', 'gi');
   return str.replaceAll(regexp, '<' + TAG + '>' + term + '</' + TAG + '>');
 }
 
