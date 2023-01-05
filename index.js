@@ -1,3 +1,4 @@
+/*
 function replace(str, term){
   var TAG = 'b';
   const regexp = new RegExp('(?<!<b>[a-z]*)' + term + '(?![a-z]*<\\/b>)', 'gi');
@@ -14,6 +15,14 @@ function replace(str, term){
   newStr += str.substring(lastBefore, str.length);
   return newStr;
 }
+*/
+
+function replace(str, term){
+  var TAG = 'b';
+  const regexp = new RegExp('(?<!<b>[a-z]*)' + term + '(?![a-z]*<\\/b>)', 'gi');
+  return str.replaceAll(regexp, '<' + TAG + '>' + term + '</' + TAG + '>');
+}
+
 
 function searchWords(searchTerm){
   return searchTerm.toLowerCase().trim().split(/[ ,\-\+]+/);
