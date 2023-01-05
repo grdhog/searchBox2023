@@ -1,4 +1,4 @@
-"use strict"
+'use strict';
 
 function replace(str, term) {
   var TAG = 'b';
@@ -20,7 +20,7 @@ function sortByLen(words) {
   return words.sort(compare);
 }
 
-function boldIt(str, searchTerm) {  
+function boldIt(str, searchTerm) {
   let cleanedTerms = deMacron(searchTerm);
   let words = searchWords(cleanedTerms);
   words = sortByLen(words);
@@ -29,21 +29,21 @@ function boldIt(str, searchTerm) {
   for (var i = 0; i < words.length; i++) {
     copyStr = replace(copyStr, words[i]);
   }
-  copyStr = getBackOriginalChars(str, copyStr)
+  copyStr = getBackOriginalChars(str, copyStr);
   return copyStr;
 }
 
 var macronMap = {
-  ā: 'a',
-  ē: 'e',
-  ī: 'i',
-  ō: 'o',
-  ū: 'u',
-  Ā: 'A',
-  Ē: 'E',
-  Ī: 'I',
-  Ō: 'O',
-  Ū: 'U',
+  'ā': 'a',
+  'ē': 'e',
+  'ī': 'i',
+  'ō': 'o',
+  'ū': 'u',
+  'Ā': 'A',
+  'Ē': 'E',
+  'Ī': 'I',
+  'Ō': 'O',
+  'Ū': 'U',
 };
 
 function deMacron(str) {
@@ -56,18 +56,18 @@ function macronFree(str) {
 }
 function getBackOriginalChars(originalStr, boldedStr) {
   let index = 0;
-  const boldArray = Array.from(boldedStr);
+  //const boldArray = Array.from(boldedStr);
+  var boldArray = boldedStr.split('');
   let inTag = false;
-  for (let i=0; i < boldArray.length; i++){
-    if (boldArray[i] === '<'){
+  for (let i = 0; i < boldArray.length; i++) {
+    if (boldArray[i] === '<') {
       inTag = true;
-    }
-    else if (boldArray[i] === '>'){
+    } else if (boldArray[i] === '>') {
       inTag = false;
-    }
-    else if (!inTag) {
+    } else if (!inTag) {
       //console.log('compare', boldArray[i], originalStr[index]);
-      if (boldArray[i] !== originalStr[index]) boldArray[i] = originalStr[index];
+      if (boldArray[i] !== originalStr[index])
+        boldArray[i] = originalStr[index];
       index++;
     }
   }
@@ -101,7 +101,10 @@ console.assert(
 console.assert(macronFree('a, e, i, o, u, A, E, I, O, U'));
 console.assert(!macronFree('ā, ē, ī, ō, ū, Ā, Ē, Ī, Ō, Ū'));
 
-console.assert('<b>Cāt</b>astrophic' === getBackOriginalChars('Cātastrophic', '<b>cat</b>astrophic') );
+console.assert(
+  '<b>Cāt</b>astrophic' ===
+    getBackOriginalChars('Cātastrophic', '<b>cat</b>astrophic')
+);
 
 console.assert(
   '<b>LōnG</b>,,,<b>tērM</b> plaXXing' ===
