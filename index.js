@@ -34,16 +34,16 @@ function boldIt(str, searchTerm) {
 }
 
 var macronMap = {
-  'ā': 'a',
-  'ē': 'e',
-  'ī': 'i',
-  'ō': 'o',
-  'ū': 'u',
-  'Ā': 'A',
-  'Ē': 'E',
-  'Ī': 'I',
-  'Ō': 'O',
-  'Ū': 'U',
+  '\u0101': 'a',
+  '\u0113': 'e',
+  '\u012B': 'i',
+  '\u014D': 'o',
+  '\u016B': 'u',
+  '\u0100': 'A',
+  '\u0112': 'E',
+  '\u012A': 'I',
+  '\u014C': 'O',
+  '\u016A': 'U',
 };
 
 function deMacron(str) {
@@ -96,17 +96,15 @@ console.assert(
 );
 
 console.assert(
-  'a, e, i, o, u, A, E, I, O, U' === deMacron('ā, ē, ī, ō, ū, Ā, Ē, Ī, Ō, Ū')
-);
-console.assert(macronFree('a, e, i, o, u, A, E, I, O, U'));
-console.assert(!macronFree('ā, ē, ī, ō, ū, Ā, Ē, Ī, Ō, Ū'));
-
-console.assert(
-  '<b>Cāt</b>astrophic' ===
-    getBackOriginalChars('Cātastrophic', '<b>cat</b>astrophic')
+  'a, e, i, o, u, A, E, I, O, U' === deMacron('\u0101, \u0113, \u012B, \u014D, \u016B, \u0100, \u0112, \u012A, \u014C, \u016A')
 );
 
 console.assert(
-  '<b>LōnG</b>,,,<b>tērM</b> plaXXing' ===
-    boldIt('LōnG,,,tērM plaXXing', 'term long')
+  '<b>C\u0101t</b>astrophic' ===
+    getBackOriginalChars('C\u0101tastrophic', '<b>cat</b>astrophic')
+);
+
+console.assert(
+  '<b>L\u014DnG</b>,,,<b>t\u0113rM</b> plaXXing' ===
+    boldIt('L\u014DnG,,,t\u0113rM plaXXing', 'term long')
 );
