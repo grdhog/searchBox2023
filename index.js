@@ -1,9 +1,21 @@
 'use strict';
 
+function replacer(match, p1, p2, p3, offset, string) {
+  console.log(match);
+  console.log(p1);
+  console.log(p2);
+  console.log(p3);
+  if (typeof p1 === 'undefined' && typeof p3 === 'undefined') {
+    //not between b tags
+    return '<b>' + p2 + '</b>';
+  }
+  return match;
+}
+
 function replace(str, term) {
-  var TAG = 'b';
-  var regexp = new RegExp('(?<!<b>[a-z]{0,1000})' + term + '(?![a-z]{0,1000}<\\/b>)', 'gi');
-  return str.replaceAll(regexp, '<' + TAG + '>' + term + '</' + TAG + '>');
+  var regexp = RegExp('(<b>[a-z]*)?(' + term + ')([a-z]*<\\/b>)?', 'gi');
+  //OLD var regexp = new RegExp('(?<!<b>[a-z]*)' + term + '(?![a-z]*<\\/b>)', 'gi');
+  return str.replaceAll(regexp, replacer);
 }
 
 function searchWords(searchTerm) {
@@ -24,8 +36,7 @@ function boldIt(str, searchTerm) {
   let cleanedTerms = deMacron(searchTerm);
   let words = searchWords(cleanedTerms);
   words = sortByLen(words);
-  let copyStr = str.toLowerCase();
-  copyStr = deMacron(copyStr);
+  let copyStr = deMacron(str);
   for (var i = 0; i < words.length; i++) {
     copyStr = replace(copyStr, words[i]);
   }
@@ -54,6 +65,7 @@ function deMacron(str) {
 function macronFree(str) {
   return str === deMacron(str);
 }
+
 function getBackOriginalChars(originalStr, boldedStr) {
   let index = 0;
   //const boldArray = Array.from(boldedStr);
@@ -73,6 +85,7 @@ function getBackOriginalChars(originalStr, boldedStr) {
   }
   return boldArray.join('');
 }
+
 
 console.assert(
   ['plan', 'shop', 'hello', 'bro', 'walk', 'talk'].toString() ===
@@ -96,13 +109,22 @@ console.assert(
 );
 
 console.assert(
-  'a, e, i, o, u, A, E, I, O, U' === deMacron('\u0101, \u0113, \u012B, \u014D, \u016B, \u0100, \u0112, \u012A, \u014C, \u016A')
+  'a, e, i, o, u, A, E, I, O, U' ===
+    deMacron(
+      '\u0101, \u0113, \u012B, \u014D, \u016B, \u0100, \u0112, \u012A, \u014C, \u016A'
+    )
 );
 
 console.assert(
   '<b>C\u0101t</b>astrophic' ===
     getBackOriginalChars('C\u0101tastrophic', '<b>cat</b>astrophic')
 );
+
+console.log('test 1', replace('L\u014DnG,,,t\u0113rM plaXXing', 'term') );
+
+console.log('test 2', replace( deMacron('L\u014DnG,,,t\u0113rM plaXXing'), 'term') );
+
+console.log( boldIt('L\u014DnG,,,t\u0113rM plaXXing', 'term long') );
 
 console.assert(
   '<b>L\u014DnG</b>,,,<b>t\u0113rM</b> plaXXing' ===
