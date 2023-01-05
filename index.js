@@ -13,9 +13,11 @@ function replacer(match, p1, p2, p3, offset, string) {
 }
 
 function replace(str, term) {
+  //IE11 can't do lookbehind or lookforward - below alternative.
   var regexp = RegExp('(<b>[a-z]*)?(' + term + ')([a-z]*<\\/b>)?', 'gi');
   //OLD var regexp = new RegExp('(?<!<b>[a-z]*)' + term + '(?![a-z]*<\\/b>)', 'gi');
-  return str.replaceAll(regexp, replacer);
+  //IE11 can't do replaceAll but if globale regexp we are cool.
+  return str.replace(regexp, replacer);
 }
 
 function searchWords(searchTerm) {
@@ -68,7 +70,7 @@ function macronFree(str) {
 
 function getBackOriginalChars(originalStr, boldedStr) {
   let index = 0;
-  //const boldArray = Array.from(boldedStr);
+  //IE11 can do Array.from(boldedStr);
   var boldArray = boldedStr.split('');
   let inTag = false;
   for (let i = 0; i < boldArray.length; i++) {
